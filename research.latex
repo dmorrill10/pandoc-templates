@@ -1,0 +1,510 @@
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+\usepackage[table]{xcolor}
+$if(fontfamily)$
+\usepackage[$fontfamilyoptions$]{$fontfamily$}
+$else$
+\usepackage{lmodern}
+$endif$
+$if(linestretch)$
+\usepackage{setspace}
+\setstretch{$linestretch$}
+$endif$
+\usepackage{amssymb,amsmath}
+\usepackage{mathtools} % Better boxes around math
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[$if(fontenc)$$fontenc$$else$T1$endif$]{fontenc}
+  \usepackage[utf8]{inputenc}
+$if(euro)$
+  \usepackage{eurosym}
+$endif$
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+$if(mainfont)$
+    \setmainfont[$mainfontoptions$]{$mainfont$}
+$endif$
+$if(sansfont)$
+    \setsansfont[$sansfontoptions$]{$sansfont$}
+$endif$
+$if(monofont)$
+    \setmonofont[Mapping=tex-ansi$if(monofontoptions)$,$monofontoptions$$endif$]{$monofont$}
+$endif$
+$if(mathfont)$
+    \setmathfont(Digits,Latin,Greek)[$mathfontoptions$]{$mathfont$}
+$endif$
+$if(CJKmainfont)$
+    \usepackage{xeCJK}
+    \setCJKmainfont[$CJKoptions$]{$CJKmainfont$}
+$endif$
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+\usepackage{hyperref}
+\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+\hypersetup{breaklinks=true,
+            unicode=true,$if(title-meta)$
+            pdftitle={$title-meta$},$endif$$if(author-meta)$
+            pdfauthor={$author-meta$},$endif$$if(subtitle)$
+            pdfsubject={$subtitle$},$endif$$if(keywords)$
+            pdfkeywords={$keywords$},$endif$
+            colorlinks=true,
+            citecolor=$if(citecolor)$$citecolor$$else$black$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$black$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$black$endif$,
+            pdfborder={0 0 0}$if(hidelinks)$,
+            hidelinks$endif$}
+\urlstyle{same}  % don't use monospace font for urls
+$if(lang)$
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[shorthands=off,$for(babel-otherlangs)$$babel-otherlangs$$sep$,$endfor$,main=$babel-lang$]{babel}
+  $babel-newcommands$
+\else
+  \usepackage{polyglossia}
+  \setmainlanguage[$polyglossia-lang.options$]{$polyglossia-lang.name$}
+$for(polyglossia-otherlangs)$
+  \setotherlanguage[$polyglossia-otherlangs.options$]{$polyglossia-otherlangs.name$}
+$endfor$
+\fi
+$endif$
+$if(natbib)$
+\usepackage{natbib}
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+$endif$
+$if(biblatex)$
+\usepackage[backend=biber]{biblatex}
+$for(bibliography)$
+\addbibresource{$bibliography$}
+$endfor$
+$endif$
+$if(listings)$
+\usepackage{listings}
+$endif$
+$if(lhs)$
+\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
+$endif$
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+$if(verbatim-in-note)$
+\usepackage{fancyvrb}
+\VerbatimFootnotes % allows verbatim text in footnotes
+$endif$
+$if(tables)$
+\usepackage{longtable,booktabs}
+$endif$
+$if(graphics)$
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+$endif$
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+$if(strikeout)$
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+$endif$
+$if(indent)$
+$else$
+% \setlength{\parindent}{0pt}
+% \setlength{\parskip}{6pt plus 2pt minus 1pt}
+$endif$
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+$if(numbersections)$
+\setcounter{secnumdepth}{5}
+$else$
+\setcounter{secnumdepth}{0}
+$endif$
+$if(dir)$
+\ifxetex
+  % load bidi as late as possible as it modifies e.g. graphicx
+  $if(latex-dir-rtl)$
+  \usepackage[RTLdocument]{bidi}
+  $else$
+  \usepackage{bidi}
+  $endif$
+\fi
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \TeXXeTstate=1
+  \newcommand{\RL}[1]{\beginR #1\endR}
+  \newcommand{\LR}[1]{\beginL #1\endL}
+  \newenvironment{RTL}{\beginR}{\endR}
+  \newenvironment{LTR}{\beginL}{\endL}
+\fi
+$endif$
+
+% Custom configuration
+%=====================
+
+\usepackage{enumerate}
+\usepackage{multirow}
+
+% macros
+%-------
+
+\newcommand{\pdLeq}{\preceq}
+\newcommand{\naive}{na\"{\i}ve}
+\def\forceLatex#1{#1}
+
+\newcommand{\final}{\fbox}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\set}[1]{\left\{ {#1} \right\}}
+
+\newcommand{\ip}[2]{\langle #1,#2 \rangle}
+\newcommand{\diag}[1]{\mathop{\bigtriangleup\subex{#1}}\nolimits}
+\newcommand{\stack}[1]{\operatorname{stack}\subex{#1}}
+\newcommand{\deriv}[2]{\frac{d #1}{ d #2 }}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{ \partial #2 }}
+\newcommand{\secondPderiv}[3]{\frac{\partial^2 #1}{ \partial #2 \partial #3 }}
+\newcommand{\grad}{\nabla}
+
+\newcommand{\subex}[1]{\left(#1\right)}
+\newcommand{\subblock}[1]{\left[#1\right]}
+\newcommand{\inTextMatrix}[1]{\subblock{\begin{smallmatrix}#1\end{smallmatrix}}}
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\avg}[1]{\bar{#1}}
+\newcommand{\smallText}[1]{\tiny {#1} \normalsize}
+\newcommand{\estimate}[1]{\tilde{#1}}
+\newcommand{\alternate}[1]{\hat{#1}}
+
+\newcommand{\KL}[2]{\operatorname{KL}\subex{#1 \;\|\; #2}}
+\newcommand{\bigO}[1]{\operatorname{\mathcal{O}}\subex{#1}}
+\newcommand{\smallo}[1]{\operatorname{o}\subex{#1}}
+
+\newcommand{\ones}{\bs{1}}
+
+% Thanks to Csaba Szepesvari for these
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\newcommand{\bookbox}[1]{
+    \par\noindent
+    \begin{center}
+    \framebox[.94\textwidth]{
+    \begin{minipage}{0.82 \textwidth}{#1}
+    \end{minipage} }
+    \end{center}
+    \par\noindent }
+
+\newcommand{\bookboxt}[2]{
+    \bookbox{
+      \begin{center}
+        \sc #1
+      \end{center}
+     \medskip
+      #2 }
+}
+\newcommand{\algDesc}{\bookboxt}
+
+\usepackage{dsfont}
+\newcommand{\E}[1]{\operatorname{\mathds{E}}\subblock{#1}}
+\newcommand{\Ewrt}{\operatorname{\mathds{E}}}
+\newcommand{\I}[1]{\operatorname{\mathds{I}}_{#1}}
+\newcommand{\Prob}[1]{\operatorname{\mathds{P}}\subex{#1}}
+\newcommand{\LogicalOr}{\vee}
+\newcommand{\LogicalAnd}{\wedge}
+\newcommand{\newln}{\\&\quad\quad\quad{}}
+\newcommand{\alg}[1]{\textsc{#1}}
+\newcommand{\problem}[1]{\textsc{#1}}
+\newcommand{\reals}{\mathds{R}}
+\newcommand{\integers}{\mathds{Z}}
+\newcommand{\gaussian}[2]{\mathcal{N}\subex{#1,#2}}
+
+\usepackage{braket}
+
+\usepackage{ mathrsfs }
+\newcommand{\lagrangian}{\mathscr{L}}
+\newcommand{\regularizer}{\mathcal{R}}
+\newcommand{\nnOrth}{\reals{}_+}
+\newcommand{\sumOverRoundsToTMinusOne}{\sum_{s=1}^{t-1}}
+\newcommand{\sumOverRoundsToTMinusTwo}{\sum_{s=1}^{t-2}}
+\newcommand{\sumOverRounds}{\sum_{t=1}^n}
+\newcommand{\sumOverExperts}{\sum_{i=1}^d}
+\newcommand{\sumOverExpertsMinusOne}{\sum_{i=1}^{d-1}}
+\newcommand{\sumOverExpertsMinusOneJ}{\sum_{j=1}^{d-1}}
+\newcommand{\sumOverExpertsMinusOneK}{\sum_{k=1}^{d-1}}
+\newcommand{\sumOverExpertsJ}{\sum_{j=1}^d}
+\newcommand{\experts}{\mathcal{E}}
+\newcommand{\paths}{\mathcal{P}}
+\newcommand{\vertices}{V}
+\newcommand{\edges}{E}
+\newcommand{\edge}{x}
+\newcommand{\numPathsUpperBound}{2^{\abs{\vertices} - 2}}
+\newcommand{\decisionSet}{D}
+\newcommand{\lossSet}{\mathcal{L}}
+\newcommand{\loss}{\ell}
+\newcommand{\utilitySet}{\mathcal{U}}
+\newcommand{\utility}{u}
+\newcommand{\forecasterCumulativeLoss}{\hat{L}}
+\newcommand{\lossCodomain}{\subblock{0,1}}
+\newcommand{\expertWeight}{w}
+\newcommand{\normalizedExpertWeight}{\overline{w}}
+\newcommand{\updateFactors}{b}
+
+\newcommand{\altLoss}{\estimate{\loss}}
+\newcommand{\prefix}{\;\sqsubseteq\;}
+\newcommand{\strictPrefix}{\;\sqsubset\;}
+
+\allowdisplaybreaks
+
+\usepackage[obeyFinal]{todonotes}
+\usepackage{booktabs}
+\usepackage{listings}
+
+% Thanks to Ed Woodcock (http://stackoverflow.com/questions/586572/make-code-in-latex-look-nice) for this.
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{setspace}
+
+\lstset{ %
+  belowcaptionskip=1\baselineskip,
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle={\footnotesize\singlespacing},aboveskip={-4ex},        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  % captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Python,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\linespread{1.2}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{0pt}
+    \setlength\belowdisplayskip{15pt}
+    % \setlength\abovedisplayshortskip{0pt}
+    % \setlength\belowdisplayshortskip{0pt}
+}
+
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{longtable}
+\usepackage{caption}
+
+\setcounter{secnumdepth}{0}
+
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{algorithm,algorithmicx,algpseudocode}
+
+\newcommand{\defword}[1]{\textbf{\boldmath{#1}}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\DeclareRobustCommand{\rmPlus}{%
+    \ifmmode
+        \text{RM}^+
+    \else
+        \GenericError{\space\space\space\space}
+            {Attempt to use \@backslashchar rmPlus outside of math mode}
+            {See my preamble documentation for explanation.}
+            {Need to use either use inline or display math.}%
+    \fi
+}
+\DeclareRobustCommand{\rcfrPlus}{%
+    \ifmmode
+        \text{RCFR}^+
+    \else
+        \GenericError{\space\space\space\space}
+            {Attempt to use \@backslashchar rcfrPlus outside of math mode}
+            {See my preamble documentation for explanation.}
+            {Need to use either use inline or display math.}%
+    \fi
+}
+\DeclareRobustCommand{\rrmPlus}{%
+    \ifmmode
+        \text{RRM}^+
+    \else
+        \GenericError{\space\space\space\space}
+            {Attempt to use \@backslashchar rrmPlus outside of math mode}
+            {See my preamble documentation for explanation.}
+            {Need to use either use inline or display math.}%
+    \fi
+}
+\newcommand{\featureExp}{\varphi}
+\newcommand{\features}[1]{\featureExp \subex{#1}}
+
+\usepackage{ upgreek }
+\newcommand{\featureSpace}{\Upphi}
+
+\newcommand{\inputSpace}{\mathcal{X}}
+\newcommand{\histories}{\mathcal{H}}
+\newcommand{\infoSets}{\mathcal{I}}
+\newcommand{\infoSet}{I}
+\newcommand{\terminalHistories}{\mathcal{Z}}
+\newcommand{\terminalHistory}{z}
+\newcommand{\history}{h}
+\newcommand{\Iabs}{I^{\text{abstract}}}
+\newcommand{\Ifull}{I^{\text{full}}}
+\newcommand{\actions}{A}
+\newcommand{\action}{a}
+\newcommand{\numActions}{N}
+\newcommand{\zeros}{\bs{0}}
+\newcommand{\reward}{v}
+\newcommand{\policy}{\sigma}
+\newcommand{\policySpace}{\Sigma}
+\newcommand{\regret}{r}
+\newcommand{\Regret}{R}
+\newcommand{\qRegret}{q}
+\newcommand{\QRegret}{Q}
+\newcommand{\maxNumRounds}{T}
+\newcommand{\currentRound}{t}
+\newcommand{\playerChoice}{p}
+\newcommand{\chance}{c}
+\newcommand{\util}{u}
+\newcommand{\reachProb}{\pi}
+\newcommand{\gap}{\varepsilon}
+\newcommand{\altGap}{\epsilon}
+\newcommand{\deviation}{\delta}
+\newcommand{\arbVector}{w}
+\newcommand{\maxReward}{L}
+\newcommand{\rewardSet}{\mathcal{V}}
+\newcommand{\learner}{\mathcal{A}}
+\newcommand{\linkFn}{\phi}
+\newcommand{\LinkFn}{\Phi}
+\newcommand{\emptySet}{\emptyset}
+\newcommand\floor[1]{\lfloor#1\rfloor}
+\newcommand\ceil[1]{\lceil#1\rceil}
+\newcommand\intersect{\cap}
+
+
+\newcommand{\N}[1]{\text{\textbf{\boldmath{#1}}}}
+\newcommand{\F}[1]{\operatorname{#1}}
+\newcommand{\DeltaMin}{\Delta \text{Min}}
+\newcommand{\PhiSum}{\Phi \text{Sum}}
+
+\usepackage{float}
+
+\usepackage{subcaption}
+\captionsetup{compatibility=false}
+
+$if(title)$
+\title{$title$$if(subtitle)$\\\vspace{0.5em}{\large $subtitle$}$endif$}
+$endif$
+$if(author)$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+$endif$
+\date{$date$}
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+$if(subparagraph)$
+$else$
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+$endif$
+
+\begin{document}
+$if(title)$
+\maketitle
+$endif$
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+{
+\hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$if(lot)$
+\listoftables
+$endif$
+$if(lof)$
+\listoffigures
+$endif$
+$body$
+
+$if(natbib)$
+$if(bibliography)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+
+$endif$
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}
