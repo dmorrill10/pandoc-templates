@@ -391,7 +391,7 @@ $if(logo)$
 $endif$
 $endif$
 
-\input{research.latex}
+\input{research_commands}
 
 \begin{document}
 $if(has-frontmatter)$
